@@ -39,19 +39,47 @@
     }
   },
   "scripts": {
-    "preinstall": "cd src && rm -rf rpg && git clone -b electron https://github.com/BTS-CM/demo-rpg-js.git rpg && cd rpg && bun install",
     "start": "node build/start.js",
     "compile": "webpack --config=build/webpack.main.config.js --config=build/webpack.renderer.config.js --config=build/webpack.preload.config.js --env=production",
     "build": "bun run compile && electron-builder --publish never",
     "release": "bun run compile && electron-builder --publish never",
     "dist:macos-latest": "bun run compile && electron-builder -m --publish never",
     "dist:windows-latest": "bun run compile && electron-builder -w --publish never",
-    "dist:ubuntu-latest": "bun run compile && electron-builder -l --publish never"
+    "dist:ubuntu-latest": "bun run compile && electron-builder -l --publish never",
+    "space": "",
+    "downloadRPG": "rm -rf rpg && git clone -b electron https://github.com/BTS-CM/demo-rpg-js.git rpg && cd rpg && cp -r main ..",
+    "rpgDev": "rpgjs dev",
+    "rpg": "cross-env RPG_TYPE=rpg PORT=3333 npm run rpgDev"
   },
   "dependencies": {
     "electron-devtools-installer": "^3.2.0",
     "terminate": "^2.8.0",
-    "vue": "^3.4.27"
+    "vue": "^3.4.27",
+    "@exodus/bytebuffer": "https://github.com/BTS-CM/bytebuffer.js.git#393541bd29f988a2af6a7785b1ee4978881ed6bb",
+    "@nanostores/persistent": "^0.10.1",
+    "@nanostores/query": "^0.2.10",
+    "@nanostores/vue": "^0.10.0",
+    "@rpgjs/client": "4.3.0",
+    "@rpgjs/default-gui": "https://github.com/BTS-CM/rpgjs-gui.git#f6c0ec7da7841f81e8d35ec3806a8dbee4adeff8",
+    "@rpgjs/gamepad": "^4.3.0",
+    "@rpgjs/mobile-gui": "^4.3.0",
+    "@rpgjs/server": "^4.3.0",
+    "@rpgjs/standalone": "4.3.0",
+    "@rpgjs/types": "4.0.5",
+    "@shoelace-style/shoelace": "^2.15.1",
+    "assert": "^2.1.0",
+    "bigi": "^1.4.2",
+    "bs58": "^5.0.0",
+    "create-hash": "^1.2.0",
+    "create-hmac": "^1.1.7",
+    "deep-equal": "^2.2.3",
+    "ecurve": "^1.0.6",
+    "eosjs": "^22.1.0",
+    "isomorphic-ws": "^5.0.0",
+    "long": "^5.2.3",
+    "safe-buffer": "^5.2.1",
+    "socket.io-client": "4.7.4",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "electron": "^31.1.0",
@@ -71,11 +99,9 @@
     "webpack": "^5.91.0",
     "webpack-cli": "^5.1.4",
     "webpack-merge": "^5.10.0",
-    "webpack-node-externals": "^3.0.0"
-  },
-  "peerDependencies": {
+    "webpack-node-externals": "^3.0.0",
     "@rpgjs/compiler": "4.3.0",
-    "typescript": "^5.0.0",
-    "cross-env": "^7.0.3"
+    "cross-env": "^7.0.3",
+    "typescript": "5.3.3"
   }
 }

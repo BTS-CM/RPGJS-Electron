@@ -172,26 +172,38 @@ let tray = null;
 let serverProcess;
 let port = 3333;
 
-const nodeModulesPath = path__WEBPACK_IMPORTED_MODULE_0___default().join(__dirname, '..', 'rpg');
+//const nodeModulesPath = path.join(__dirname, '..', 'rpg');
 
-const launchServer = new Promise((resolve, reject) => {
+const rpgPath = path__WEBPACK_IMPORTED_MODULE_0___default().join(__dirname, '../');
+
+// only works in dev mode!
+const launchServer = new Promise(async (resolve, reject) => {
+    console.log(rpgPath);
     try {
-        serverProcess = spawn(
-            'npm', ['run', 'electron'],
-            {
-                cwd: nodeModulesPath,
-                shell: true,
-            }
-        );
+        serverProcess = await spawn('npm', ['run', 'rpg'], { shell: true });
     } catch (error) {
         console.log({error})
         reject(error);
         return;
     }
-    console.log('serverProcess.pid: ', serverProcess.pid);
-    resolve();
-    return;
+
+    if (!serverProcess || !serverProcess.pid) {
+        reject('serverProcess is null');
+        return;
+    }
+
+    serverProcess.stdout.on('data', (data) => {
+        console.log(`stdout: ${data}`);
+        const _str = `${data}`;
+        if (_str.includes("localhost")) {
+            console.log('serverProcess.pid: ', serverProcess.pid);
+            resolve();
+            return;
+        }
+    });
 });
+
+
 
 function closeServerProcess(pid) {
     return new Promise((resolve, reject) => {
@@ -349,8 +361,9 @@ if (currentOS === "win32" || currentOS === "linux") {
         })
         .then(async () => {
             let _server = await launchServer;
+            return _server;
         })
-        .then(() => {
+        .then((res) => {
             createWindow();
         })
         .catch((error) => {
@@ -367,8 +380,9 @@ if (currentOS === "win32" || currentOS === "linux") {
     })
     .then(async () => {
         let _server = await launchServer;
+        return _server;
     })
-    .then(() => {
+    .then((res) => {
         createWindow();
     })
     .catch((error) => {

@@ -1,27 +1,31 @@
 {
   "compilerOptions": {
-    // Enable latest features
-    "lib": ["ESNext", "DOM"],
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleDetection": "force",
-    "jsx": "react-jsx",
-    "allowJs": true,
-
-    // Bundler mode
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
-    "noEmit": true,
-
-    // Best practices
+    "target": "es2020",
+    "module": "esnext",
+    "outDir": "dist",
     "strict": true,
-    "skipLibCheck": true,
-    "noFallthroughCasesInSwitch": true,
-
-    // Some stricter flags (disabled by default)
-    "noUnusedLocals": false,
+    "sourceMap": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": false,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "removeComments": false,
     "noUnusedParameters": false,
-    "noPropertyAccessFromIndexSignature": false
-  }
+    "noUnusedLocals": false,
+    "noImplicitThis": false,
+    "noImplicitAny": false,
+    "noImplicitReturns": false,
+    "declaration": false,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "types": ["node", "vite/client", "@shoelace-style/shoelace/dist/types/vue"],
+    "resolveJsonModule": true
+  },
+  "include": [
+    ".",
+    "index.d.ts",
+    "node_modules/@rpgjs/**/*.d.ts",
+    "node_modules/@rpgjs/compiler/index.d.ts"
+  ],
+  "exclude": ["node_modules"]
 }
