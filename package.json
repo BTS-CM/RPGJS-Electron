@@ -1,6 +1,6 @@
 {
   "name": "rpgjs-electron",
-  "productName": "RPGJS Electron",
+  "productName": "RPGJS",
   "version": "1.0.0",
   "main": "app/background.js",
   "author": "BeetEOS team <nftea.gallery@gmail.com>",
@@ -12,7 +12,7 @@
   },
   "build": {
     "appId": "rpgjs-electron",
-    "productName": "Electron RPGJS",
+    "productName": "RPGJS",
     "artifactName": "rpgjs.${ext}",
     "files": [
       "app/**/*",
