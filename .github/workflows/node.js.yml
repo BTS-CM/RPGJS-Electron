@@ -56,7 +56,7 @@ jobs:
         bun-version: 'latest'
     
     - run: bun install
-    - run: bun run-script dist:${{ matrix.os }}
+    - run: bun run dist:${{ matrix.os }}
 
     - name: Upload .${{ matrix.release_format }} file
       uses: actions/upload-artifact@v3
