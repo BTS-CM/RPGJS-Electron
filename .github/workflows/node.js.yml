@@ -52,6 +52,8 @@ jobs:
         node-version: 'node'
 
     - uses: oven-sh/setup-bun@v2
+      with:
+        bun-version: 'latest'
     
     - run: bun install
     - run: bun run-script dist:${{ matrix.os }}
