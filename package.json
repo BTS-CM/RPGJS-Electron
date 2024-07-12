@@ -48,6 +48,8 @@
     "dist:ubuntu-latest": "bun run compile && electron-builder -l --publish never",
     "space": "",
     "downloadRPG": "rm -rf rpg && git clone -b electron https://github.com/BTS-CM/demo-rpg-js.git rpg && cd rpg && cp -R main ..",
+    "gitClone": "git clone https://github.com/BTS-CM/demo-rpg-js.git rpg",
+    "mvRPG": "cd rpg && cp -R main ..",
     "rpgDev": "rpgjs dev",
     "rpg": "cross-env RPG_TYPE=rpg PORT=3333 npm run rpgDev"
   },
