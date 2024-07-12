@@ -9,6 +9,7 @@
     let _port = ref(null);
     onMounted(async () => {
         let port = await window.electron.port();
+        console.log({port})
         port = trimAnsiEscapeCodes(port);
         _port.value = port.split("➜")[1].trim();
     });

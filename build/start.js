@@ -1,9 +1,18 @@
+/*
 const childProcess = require('child_process');
 const electron = require('electron');
 const webpack = require('webpack');
 const mainConfig = require('./webpack.main.config.js');
 const rendererConfig = require('./webpack.renderer.config.js');
 const preloadConfig = require('./webpack.preload.config.js');
+*/
+
+import childProcess from "child_process";
+import electron from "electron";
+import webpack from "webpack";
+import mainConfig from "./webpack.main.config.js";
+import rendererConfig from "./webpack.renderer.config.js";
+import preloadConfig from "./webpack.preload.config.js";
 
 const env = "development";
 const mainCompiler = webpack(mainConfig(env));

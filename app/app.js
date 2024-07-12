@@ -281,6 +281,9 @@ __webpack_require__.r(__webpack_exports__);
     let _port = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(null);
     (0,vue__WEBPACK_IMPORTED_MODULE_0__.onMounted)(async () => {
       let port = await window.electron.port();
+      console.log({
+        port
+      });
       port = trimAnsiEscapeCodes(port);
       _port.value = port.split("➜")[1].trim();
     });
@@ -324,31 +327,6 @@ const _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElemen
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup._port ? "RPGJS Demo" : null), 1 /* TEXT */), _hoisted_1, _hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Hosting game at the following URL:"), _hoisted_3, _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup._port ? $setup._port.split("Local: ")[1] : 'Loading...'), 1 /* TEXT */)]);
 }
-
-/***/ }),
-
-/***/ "./src/router/index.js":
-/*!*****************************!*\
-  !*** ./src/router/index.js ***!
-  \*****************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.mjs");
-/* harmony import */ var _components_start_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/start.vue */ "./src/components/start.vue");
-
-
-const router = (0,vue_router__WEBPACK_IMPORTED_MODULE_1__.createRouter)({
-  routes: [{
-    path: '/',
-    component: _components_start_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
-  }],
-  history: (0,vue_router__WEBPACK_IMPORTED_MODULE_1__.createWebHashHistory)()
-});
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (router);
 
 /***/ }),
 
@@ -17334,6 +17312,31 @@ registerRuntimeCompiler(compileToFunction);
 
 
 
+
+/***/ }),
+
+/***/ "./src/router/index.js":
+/*!*****************************!*\
+  !*** ./src/router/index.js ***!
+  \*****************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.mjs");
+/* harmony import */ var _components_start_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/start.vue */ "./src/components/start.vue");
+
+
+const router = (0,vue_router__WEBPACK_IMPORTED_MODULE_1__.createRouter)({
+  routes: [{
+    path: '/',
+    component: _components_start_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  }],
+  history: (0,vue_router__WEBPACK_IMPORTED_MODULE_1__.createWebHashHistory)()
+});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (router);
 
 /***/ }),
 

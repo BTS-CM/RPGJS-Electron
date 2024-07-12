@@ -32,16 +32,6 @@ module.exports = require("url");
 
 /***/ }),
 
-/***/ "child_process":
-/*!********************************!*\
-  !*** external "child_process" ***!
-  \********************************/
-/***/ ((module) => {
-
-module.exports = require("child_process");
-
-/***/ }),
-
 /***/ "os":
 /*!*********************!*\
   !*** external "os" ***!
@@ -89,35 +79,6 @@ module.exports = require("path");
 /******/ 	}
 /******/ 	
 /************************************************************************/
-/******/ 	/* webpack/runtime/compat get default export */
-/******/ 	(() => {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = (module) => {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				() => (module['default']) :
-/******/ 				() => (module);
-/******/ 			__webpack_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/define property getters */
-/******/ 	(() => {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = (exports, definition) => {
-/******/ 			for(var key in definition) {
-/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
-/******/ 			}
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	(() => {
-/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
-/******/ 	})();
-/******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
 /******/ 	(() => {
 /******/ 		// define __esModule on exports
@@ -136,31 +97,60 @@ var __webpack_exports__ = {};
   \***************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var path__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! path */ "path");
-/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(path__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var url__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! url */ "url");
-/* harmony import */ var url__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(url__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var os__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! os */ "os");
-/* harmony import */ var os__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(os__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var terminate__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! terminate */ "terminate");
-/* harmony import */ var terminate__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(terminate__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var electron__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! electron */ "electron");
-/* harmony import */ var electron__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(electron__WEBPACK_IMPORTED_MODULE_4__);
 
 
 
 
 
+//import { buildMode } from "@rpgjs/compiler";
+//import buildMode from "@rpgjs/compiler/lib/build/index.js";
 
 
-const { spawn } = __webpack_require__(/*! child_process */ "child_process");
+
+//const { spawn } = require('child_process');
+
+//import { buildMode } from "@rpgjs/compiler";
 
 let mainWindow;
 let tray = null;
 let serverProcess;
 
 const launchServer = new Promise(async (resolve, reject) => {
+    return resolve("aaaaa")
+    /*
+    // Dynamically import the buildMode function from a specific path
+    import('@rpgjs/compiler/lib/build/index.js').then(async module => {
+        const buildMode = module.default; // Use module.default if buildMode is a default export
+        // Or if buildMode is a named export, you can destructure it directly:
+        // const { buildMode } = module;
+        // Use buildMode here
+
+
+
+    }).catch(error => {
+        console.error('Failed to load buildMode from @rpgjs/compiler:', error);
+        return reject();
+    });
+    */
+
+    let res;
     try {
-        serverProcess = await spawn('npm', ['run', 'rpg'], { shell: true });
+        res = await buildMode();
+    } catch (error) {
+        console.log({error});
+        reject(error);
+        return;
+    }
+    console.log({res});
+    return resolve('http://localhost:3000/');
+
+    /*
+    try {
+        serverProcess = await spawn('npm', ['run', 'rpg'], { cwd: __dirname, shell: true });
     } catch (error) {
         console.log({error})
         reject(error);
@@ -181,6 +171,13 @@ const launchServer = new Promise(async (resolve, reject) => {
             return;
         }
     });
+
+    serverProcess.stderr.on('data', (data) => {
+        console.error(`stderr: ${data}`);
+        resolve(`error:  ${data}`)
+        return;
+    });
+    */
 });
 
 function closeServerProcess(pid) {
@@ -188,7 +185,7 @@ function closeServerProcess(pid) {
         if (!pid) {
             return resolve();
         }
-        terminate__WEBPACK_IMPORTED_MODULE_3___default()(pid, (err) => {
+        terminate__WEBPACK_IMPORTED_MODULE_3__(pid, (err) => {
             return resolve();
         });
     });
@@ -217,7 +214,7 @@ const createWindow = async (msg) => {
             enableRemoteModule: false,
             sandbox: false,
             //sandbox: true,
-            preload: path__WEBPACK_IMPORTED_MODULE_0___default().join(__dirname, "preload.js"),
+            preload: path__WEBPACK_IMPORTED_MODULE_0__.join(__dirname, "preload.js"),
             //
             webgl: true,
             disableHardwareAcceleration: false,
@@ -237,8 +234,8 @@ const createWindow = async (msg) => {
     }
     */
 
-    mainWindow.loadURL(url__WEBPACK_IMPORTED_MODULE_1___default().format({
-        pathname: path__WEBPACK_IMPORTED_MODULE_0___default().join(__dirname, "index.html"),
+    mainWindow.loadURL(url__WEBPACK_IMPORTED_MODULE_1__.format({
+        pathname: path__WEBPACK_IMPORTED_MODULE_0__.join(__dirname, "index.html"),
         protocol: "file:",
         slashes: true,
     }));
@@ -282,7 +279,7 @@ const createWindow = async (msg) => {
         const NOTIFICATION_BODY =
             arg == "request" ? "Beet has received a new request." : arg;
 
-        if ((os__WEBPACK_IMPORTED_MODULE_2___default().platform) === "win32") {
+        if (os__WEBPACK_IMPORTED_MODULE_2__.platform === "win32") {
             electron__WEBPACK_IMPORTED_MODULE_4__.app.setAppUserModelId(electron__WEBPACK_IMPORTED_MODULE_4__.app.name);
         }
 
@@ -319,7 +316,7 @@ const createWindow = async (msg) => {
 
 electron__WEBPACK_IMPORTED_MODULE_4__.app.disableHardwareAcceleration();
 
-let currentOS = os__WEBPACK_IMPORTED_MODULE_2___default().platform();
+let currentOS = os__WEBPACK_IMPORTED_MODULE_2__.platform();
 if (currentOS === "win32" || currentOS === "linux") {
     // windows + linux setup phase
     const gotTheLock = electron__WEBPACK_IMPORTED_MODULE_4__.app.requestSingleInstanceLock();

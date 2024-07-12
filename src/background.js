@@ -3,6 +3,9 @@ import url from "url";
 import os from "os";
 import terminate from "terminate";
 
+//import { buildMode } from "@rpgjs/compiler";
+//import buildMode from "@rpgjs/compiler/lib/build/index.js";
+
 import {
     app,
     BrowserWindow,
@@ -14,15 +17,46 @@ import {
     shell,
 } from "electron";
 
-const { spawn } = require('child_process');
+//const { spawn } = require('child_process');
+
+//import { buildMode } from "@rpgjs/compiler";
 
 let mainWindow;
 let tray = null;
 let serverProcess;
 
 const launchServer = new Promise(async (resolve, reject) => {
+    return resolve("aaaaa")
+    /*
+    // Dynamically import the buildMode function from a specific path
+    import('@rpgjs/compiler/lib/build/index.js').then(async module => {
+        const buildMode = module.default; // Use module.default if buildMode is a default export
+        // Or if buildMode is a named export, you can destructure it directly:
+        // const { buildMode } = module;
+        // Use buildMode here
+
+
+
+    }).catch(error => {
+        console.error('Failed to load buildMode from @rpgjs/compiler:', error);
+        return reject();
+    });
+    */
+
+    let res;
     try {
-        serverProcess = await spawn('npm', ['run', 'rpg'], { shell: true });
+        res = await buildMode();
+    } catch (error) {
+        console.log({error});
+        reject(error);
+        return;
+    }
+    console.log({res});
+    return resolve('http://localhost:3000/');
+
+    /*
+    try {
+        serverProcess = await spawn('npm', ['run', 'rpg'], { cwd: __dirname, shell: true });
     } catch (error) {
         console.log({error})
         reject(error);
@@ -43,6 +77,13 @@ const launchServer = new Promise(async (resolve, reject) => {
             return;
         }
     });
+
+    serverProcess.stderr.on('data', (data) => {
+        console.error(`stderr: ${data}`);
+        resolve(`error:  ${data}`)
+        return;
+    });
+    */
 });
 
 function closeServerProcess(pid) {

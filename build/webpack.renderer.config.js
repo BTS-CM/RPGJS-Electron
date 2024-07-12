@@ -1,9 +1,21 @@
+/*
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 const FriendlyErrorsWebpackPlugin = require('@soda/friendly-errors-webpack-plugin');
 const { VueLoaderPlugin } = require('vue-loader');
+*/
 
-module.exports = function(env) {
+import path from "path";
+import nodeExternals from "webpack-node-externals";
+import FriendlyErrorsWebpackPlugin from "@soda/friendly-errors-webpack-plugin";
+import { VueLoaderPlugin } from "vue-loader";
+
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+export default function(env) {
     return {
         entry: {
             app: "./src/app.js"

@@ -7,6 +7,7 @@
   "license": "MIT",
   "homepage": "https://github.com/BTS-CM/RPGJS-Electron",
   "repository": "github:BTS-CM/RPGJS-Electron",
+  "type": "module",
   "browser": {
     "app": "app/app.js"
   },
@@ -16,6 +17,7 @@
     "artifactName": "rpgjs.${ext}",
     "files": [
       "app/**/*",
+      "main/**/*",
       "node_modules/**/*",
       "package.json"
     ],
