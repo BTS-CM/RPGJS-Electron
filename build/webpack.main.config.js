@@ -19,7 +19,7 @@ module.exports = function(env) {
         },
             
         externals: [nodeExternals({
-            allowlist: []
+            allowlist: ['@babel/runtime']
         })],
 
         resolve: {

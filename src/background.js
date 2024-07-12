@@ -1,7 +1,6 @@
 import path from "path";
 import url from "url";
 import os from "os";
-import fs from "fs";
 import terminate from "terminate";
 
 import {
@@ -20,15 +19,8 @@ const { spawn } = require('child_process');
 let mainWindow;
 let tray = null;
 let serverProcess;
-let port = 3333;
 
-//const nodeModulesPath = path.join(__dirname, '..', 'rpg');
-
-const rpgPath = path.join(__dirname, '../');
-
-// only works in dev mode!
 const launchServer = new Promise(async (resolve, reject) => {
-    console.log(rpgPath);
     try {
         serverProcess = await spawn('npm', ['run', 'rpg'], { shell: true });
     } catch (error) {
@@ -47,13 +39,11 @@ const launchServer = new Promise(async (resolve, reject) => {
         const _str = `${data}`;
         if (_str.includes("localhost")) {
             console.log('serverProcess.pid: ', serverProcess.pid);
-            resolve();
+            resolve(_str);
             return;
         }
     });
 });
-
-
 
 function closeServerProcess(pid) {
     return new Promise((resolve, reject) => {
@@ -69,9 +59,10 @@ function closeServerProcess(pid) {
 /*
  * Creating the primary window, only runs once.
  */
-const createWindow = async () => {
-    let width = 816;
-    let height = 624;
+const createWindow = async (msg) => {
+    // webview resolution: 816x624
+    let width = 300;
+    let height = 150;
     mainWindow = new BrowserWindow({
         width: width,
         height: height,
@@ -90,7 +81,6 @@ const createWindow = async () => {
             //sandbox: true,
             preload: path.join(__dirname, "preload.js"),
             //
-            experimentalFeatures: true,
             webgl: true,
             disableHardwareAcceleration: false,
             offscreen: false,
@@ -99,12 +89,21 @@ const createWindow = async () => {
         icon: __dirname + "/resources/icons/512x512.png",
     });
 
+    /*
+    // NOTE: This method uses as much as 100% CPU
     const _url = `http://localhost:${port}/`;
     try {
         mainWindow.loadURL(_url);
     } catch (error) {
         console.log({error});
     }
+    */
+
+    mainWindow.loadURL(url.format({
+        pathname: path.join(__dirname, "index.html"),
+        protocol: "file:",
+        slashes: true,
+    }));
 
     app.on('window-all-closed', async () => {
         if (process.platform !== 'darwin') {
@@ -140,9 +139,7 @@ const createWindow = async () => {
         tray.popUpContextMenu(contextMenu);
     });
 
-
     ipcMain.on("notify", (event, arg) => {
-        logger.debug("notify");
         const NOTIFICATION_TITLE = "Beet wallet notification";
         const NOTIFICATION_BODY =
             arg == "request" ? "Beet has received a new request." : arg;
@@ -161,6 +158,10 @@ const createWindow = async () => {
         }
 
         showNotification();
+    });
+
+    ipcMain.handle("port", async (event, arg) => {
+        return msg;
     });
 
     tray.on("click", () => {
@@ -204,17 +205,12 @@ if (currentOS === "win32" || currentOS === "linux") {
         });
 
         app.whenReady()
-        .then(() => {
-            app.commandLine.appendSwitch('enable-webgl');
-            app.commandLine.appendSwitch('ignore-gpu-blacklist');
-            app.commandLine.appendSwitch('force_high_performance_gpu');
-        })
         .then(async () => {
             let _server = await launchServer;
             return _server;
         })
         .then((res) => {
-            createWindow();
+            createWindow(res);
         })
         .catch((error) => {
             console.log({error});
@@ -223,17 +219,12 @@ if (currentOS === "win32" || currentOS === "linux") {
     }
 } else {
     app.whenReady()
-    .then(() => {
-        app.commandLine.appendSwitch('enable-webgl');
-        app.commandLine.appendSwitch('ignore-gpu-blacklist');
-        app.commandLine.appendSwitch('force_high_performance_gpu');
-    })
     .then(async () => {
         let _server = await launchServer;
         return _server;
     })
     .then((res) => {
-        createWindow();
+        createWindow(res);
     })
     .catch((error) => {
         console.log({error});
@@ -246,9 +237,11 @@ if (currentOS === "win32" || currentOS === "linux") {
         }
     });
 
+    /*
     app.on("activate", () => {
         if (mainWindow === null) {
             createWindow();
         }
     });
+    */
 }
