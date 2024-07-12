@@ -16,7 +16,7 @@ module.exports = function(env) {
         mode: env === "production" ? "production" : "development",
 
         externals: [nodeExternals({
-            allowlist: ['vue', 'demo-rpg-js']
+            allowlist: ['vue', 'vue-router', '@vue/devtools-api', '@babel/runtime']
         })],
         
         resolve: {

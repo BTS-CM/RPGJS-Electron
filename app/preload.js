@@ -91,6 +91,7 @@ __webpack_require__.r(__webpack_exports__);
 
 electron__WEBPACK_IMPORTED_MODULE_0__.contextBridge.exposeInMainWorld('electron', {
     //notify: async (msg) => ipcRenderer.send('notify', msg),
+    port: async () => electron__WEBPACK_IMPORTED_MODULE_0__.ipcRenderer.invoke('port'),
 });
 
 /******/ })()

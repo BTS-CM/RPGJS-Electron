@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>RPG-JS demo</title>
+    <meta
+      name="viewport"
+      content="initial-scale=1, maximum-scale=1, user-scalable=no, minimum-scale=1, width=device-width, height=device-height"
+    />
+  </head>
+
+  <body>
+    <div class="main" id="app">
+        <router-view></router-view>
+    </div>
+    <script src="app.js"></script>
+    <style>
+      body,
+      html {
+        height: 100%;
+        overflow: hidden;
+      }
+
+      body {
+        margin: 0;
+        background-color: #759f8f;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    </style>
+  </body>
+</html>
