@@ -281,9 +281,20 @@ __webpack_require__.r(__webpack_exports__);
     let _port = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(null);
     (0,vue__WEBPACK_IMPORTED_MODULE_0__.onMounted)(async () => {
       let port = await window.electron.port();
+      if (!port) {
+        return;
+      }
       port = trimAnsiEscapeCodes(port);
       _port.value = port.split("➜")[1].trim();
     });
+
+    /*
+    onMounted(async () => {
+        let directories = await window.electron.directories();
+        console.log(directories);
+    });
+    */
+
     const __returned__ = {
       trimAnsiEscapeCodes,
       get _port() {

@@ -3,34 +3,35 @@ import url from "url";
 import os from "os";
 import terminate from "terminate";
 
+import { spawn } from "child_process";
+
 import {
     app,
     BrowserWindow,
     Menu,
     Tray,
-    dialog,
     ipcMain,
     Notification,
-    shell,
 } from "electron";
-
-const { spawn } = require('child_process');
 
 let mainWindow;
 let tray = null;
 let serverProcess;
 
 const launchServer = new Promise(async (resolve, reject) => {
+    let options = { shell: true, cwd: path.join(__dirname, '..') };
+
     try {
-        serverProcess = await spawn('npm', ['run', 'rpg'], { shell: true });
+        serverProcess = spawn('npm', ['run', 'rpg'], options);
     } catch (error) {
-        console.log({error})
-        reject(error);
+        console.log(error)
+        resolve("ERROR")
+        //reject(error);
         return;
     }
 
     if (!serverProcess || !serverProcess.pid) {
-        reject('serverProcess is null');
+        resolve('Error spawning server process');
         return;
     }
 
@@ -43,6 +44,10 @@ const launchServer = new Promise(async (resolve, reject) => {
             return;
         }
     });
+
+    const timeoutId = setTimeout(() => {
+        resolve("Server error");
+    }, 15000);
 });
 
 function closeServerProcess(pid) {
@@ -60,7 +65,6 @@ function closeServerProcess(pid) {
  * Creating the primary window, only runs once.
  */
 const createWindow = async (msg) => {
-    // webview resolution: 816x624
     let width = 300;
     let height = 150;
     mainWindow = new BrowserWindow({
@@ -77,33 +81,22 @@ const createWindow = async (msg) => {
             nodeIntegration: false,
             contextIsolation: true,
             enableRemoteModule: false,
-            sandbox: false,
-            //sandbox: true,
+            sandbox: true,
+            //sandbox: false,
             preload: path.join(__dirname, "preload.js"),
-            //
-            webgl: true,
-            disableHardwareAcceleration: false,
-            offscreen: false,
-            backgroundThrottling: false
         },
         icon: __dirname + "/resources/icons/512x512.png",
     });
-
-    /*
-    // NOTE: This method uses as much as 100% CPU
-    const _url = `http://localhost:${port}/`;
-    try {
-        mainWindow.loadURL(_url);
-    } catch (error) {
-        console.log({error});
-    }
-    */
 
     mainWindow.loadURL(url.format({
         pathname: path.join(__dirname, "index.html"),
         protocol: "file:",
         slashes: true,
     }));
+
+    ipcMain.handle('directories', async (event, arg) => {
+        return { directory: __dirname, execPath: process.execPath, resourcesPath: process.resourcesPath};
+    });
 
     app.on('window-all-closed', async () => {
         if (process.platform !== 'darwin') {
@@ -179,8 +172,6 @@ const createWindow = async (msg) => {
     });
 };
 
-app.disableHardwareAcceleration();
-
 let currentOS = os.platform();
 if (currentOS === "win32" || currentOS === "linux") {
     // windows + linux setup phase
@@ -210,6 +201,7 @@ if (currentOS === "win32" || currentOS === "linux") {
             return _server;
         })
         .then((res) => {
+            //console.log({res})
             createWindow(res);
         })
         .catch((error) => {
@@ -224,6 +216,7 @@ if (currentOS === "win32" || currentOS === "linux") {
         return _server;
     })
     .then((res) => {
+        //console.log({res})
         createWindow(res);
     })
     .catch((error) => {

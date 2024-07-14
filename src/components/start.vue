@@ -9,9 +9,19 @@
     let _port = ref(null);
     onMounted(async () => {
         let port = await window.electron.port();
+        if (!port) {
+            return;
+        }
         port = trimAnsiEscapeCodes(port);
         _port.value = port.split("➜")[1].trim();
     });
+
+    /*
+    onMounted(async () => {
+        let directories = await window.electron.directories();
+        console.log(directories);
+    });
+    */
 </script>
 
 <template>
