@@ -49,14 +49,6 @@
     },
     "win": {
       "target": "nsis"
-    },
-    "linux": {
-      "category": "Utility",
-      "target": ["deb", "AppImage"],
-      "mimeTypes": [],
-      "desktop": {
-        "exec": "rpgjs %U"
-      }
     }
   },
   "scripts": {
@@ -64,9 +56,7 @@
     "compile": "webpack --config=build/webpack.main.config.js --config=build/webpack.renderer.config.js --config=build/webpack.preload.config.js --env=production",
     "build": "bun run compile && electron-builder --publish never",
     "release": "bun run compile && electron-builder --publish never",
-    "dist:macos-latest": "bun run compile && electron-builder -m --publish never",
     "dist:windows-latest": "bun run compile && electron-builder -w --publish never",
-    "dist:ubuntu-latest": "bun run compile && electron-builder -l --publish never",
     "space": "",
     "downloadRPG": "rm -rf rpg && git clone https://github.com/BTS-CM/demo-rpg-js.git rpg && cd rpg && cp -R main ..",
     "gitClone": "git clone https://github.com/BTS-CM/demo-rpg-js.git rpg",
