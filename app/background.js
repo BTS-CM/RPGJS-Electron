@@ -60,16 +60,6 @@ module.exports = require("os");
 
 module.exports = require("path");
 
-/***/ }),
-
-/***/ "process":
-/*!**************************!*\
-  !*** external "process" ***!
-  \**************************/
-/***/ ((module) => {
-
-module.exports = require("process");
-
 /***/ })
 
 /******/ 	});
@@ -157,9 +147,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var child_process__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(child_process__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var electron__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! electron */ "electron");
 /* harmony import */ var electron__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(electron__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var process__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! process */ "process");
-/* harmony import */ var process__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(process__WEBPACK_IMPORTED_MODULE_6__);
-
 
 
 
@@ -174,33 +161,6 @@ let tray = null;
 let serverProcess;
 
 const launchServer = new Promise(async (resolve, reject) => {
-    /*
-    // doesn't work... esm warnings..
-    process.env.RPG_TYPE = 'rpg';
-    let devMode;
-    import("@rpgjs/compiler/lib/serve/index.js")
-    .then(async module => {
-      devMode = module.devMode;
-
-      let res;
-      try {
-          res = await devMode({
-              port: 3000
-          });
-      } catch (error) {
-          console.log({error})
-          reject(error);
-          return;
-      }
-
-      return resolve("http://localhost:3333/");
-
-    })
-    .catch(err => {
-      console.error("Failed to load the module:", err);
-    });
-    */
-
     let options = { shell: true, cwd: path__WEBPACK_IMPORTED_MODULE_0___default().join(__dirname, '..') };
 
     try {
@@ -263,8 +223,8 @@ const createWindow = async (msg) => {
             nodeIntegration: false,
             contextIsolation: true,
             enableRemoteModule: false,
-            //sandbox: true,
-            sandbox: false,
+            sandbox: true,
+            //sandbox: false,
             preload: path__WEBPACK_IMPORTED_MODULE_0___default().join(__dirname, "preload.js"),
         },
         icon: __dirname + "/resources/icons/512x512.png",

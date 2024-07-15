@@ -70,7 +70,7 @@
     "@nanostores/query": "^0.2.10",
     "@nanostores/vue": "^0.10.0",
     "@rpgjs/client": "4.3.0",
-    "@rpgjs/default-gui": "https://github.com/BTS-CM/rpgjs-gui.git#f6c0ec7da7841f81e8d35ec3806a8dbee4adeff8",
+    "@rpgjs/default-gui": "https://github.com/BTS-CM/rpgjs-gui.git#3591b4396991fd5d90eb23e6d7e59bb76b78786f",
     "@rpgjs/gamepad": "^4.3.0",
     "@rpgjs/mobile-gui": "^4.3.0",
     "@rpgjs/server": "^4.3.0",
