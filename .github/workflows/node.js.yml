@@ -55,7 +55,12 @@ jobs:
       with:
         bun-version: 'latest'
     
-    - run: bun install
+    - name: prepare install
+      if: matrix.os == 'ubuntu-latest'
+      run: rm -rf dist/linux-unpacked
+
+    - name: Install dependencies
+      run: bun install
 
     - run: bun run gitClone
     - run: bun run mvRPG
