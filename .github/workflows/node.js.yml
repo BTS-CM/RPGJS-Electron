@@ -29,17 +29,11 @@ jobs:
     needs: create_release
     strategy:
       matrix:
-        os: [windows-latest, ubuntu-latest, macos-latest]
+        os: [windows-latest]
         include:
           - os: windows-latest
             release_suffix: windows
             release_format: exe
-          - os: ubuntu-latest
-            release_suffix: ubuntu
-            release_format: deb
-          - os: macos-latest
-            release_suffix: macos
-            release_format: dmg
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -55,12 +49,7 @@ jobs:
       with:
         bun-version: 'latest'
     
-    - name: prepare install
-      if: matrix.os == 'ubuntu-latest'
-      run: rm -rf dist/linux-unpacked
-
-    - name: Install dependencies
-      run: bun install
+    - run: bun install
 
     - run: bun run gitClone
     - run: bun run mvRPG
@@ -72,13 +61,6 @@ jobs:
       with:
         name: rpgjs.${{ matrix.release_format }}
         path: dist/rpgjs.${{ matrix.release_format }}
-
-    - name: Upload linux appimage
-      if: matrix.os == 'ubuntu-latest'
-      uses: actions/upload-artifact@v3
-      with:
-        name: rpgjs.AppImage
-        path: dist/rpgjs.AppImage
 
     - name: Upload .exe.blockmap
       if: matrix.release_format == 'exe'
@@ -116,38 +98,17 @@ jobs:
       with:
         name: latest.yml
         path: ~/
-    - name: Download dmg
-      uses: actions/download-artifact@v3
-      with:
-        name: rpgjs.dmg
-        path: ~/
-    - name: Download deb
-      uses: actions/download-artifact@v3
-      with:
-        name: rpgjs.deb
-        path: ~/
-    - name: Download AppImage
-      uses: actions/download-artifact@v3
-      with:
-        name: rpgjs.AppImage
-        path: ~/
     - name: Calculate hashes
       id: calc_hash
       run: |
           echo "::set-output name=blockmaphash::$(sha256sum /home/runner/rpgjs.exe.blockmap|cut -c-64)"
           echo "::set-output name=ymlhash::$(sha256sum /home/runner/latest.yml|cut -c-64)"
           echo "::set-output name=exehash::$(sha256sum /home/runner/rpgjs.exe|cut -c-64)"
-          echo "::set-output name=dmghash::$(sha256sum /home/runner/rpgjs.dmg|cut -c-64)"
-          echo "::set-output name=debhash::$(sha256sum /home/runner/rpgjs.deb|cut -c-64)"
-          echo "::set-output name=apphash::$(sha256sum /home/runner/rpgjs.AppImage|cut -c-64)"
     - name: Perform release
       uses: BTS-CM/action-gh-release@cd28b0f5ee8571b76cfdaa62a30d51d752317477
       with:
         files: |
             /home/runner/rpgjs.exe
-            /home/runner/rpgjs.dmg
-            /home/runner/rpgjs.deb
-            /home/runner/rpgjs.AppImage
             /home/runner/rpgjs.exe.blockmap
             /home/runner/latest.yml
         tag_name: ${{ needs.create_release.outputs.tag-name }}
@@ -159,9 +120,6 @@ jobs:
                 | Platform | SHA256 Checksum |
                 |---|---|
                 |[Microsoft Windows](https://github.com/BTS-CM/RPGJS-Electron/releases/download/${{ github.ref_name }}/rpgjs.exe)|`${{steps.calc_hash.outputs.exehash}}`|
-                |[MacOS](https://github.com/BTS-CM/RPGJS-Electron/releases/download/${{ github.ref_name }}/rpgjs.dmg)|`${{steps.calc_hash.outputs.dmghash}}`|
-                |[Linux Deb](https://github.com/BTS-CM/RPGJS-Electron/releases/download/${{ github.ref_name }}/rpgjs.deb)|`${{steps.calc_hash.outputs.debhash}}`|
-                |[Linux AppImage](https://github.com/BTS-CM/RPGJS-Electron/releases/download/${{ github.ref_name }}/rpgjs.AppImage)|`${{steps.calc_hash.outputs.apphash}}`|
                 |[EXE blockmap](https://github.com/BTS-CM/RPGJS-Electron/releases/download/${{ github.ref_name }}/rpgjs.exe.blockmap)|`${{steps.calc_hash.outputs.blockmaphash}}`|
                 |[Latest.yml](https://github.com/BTS-CM/RPGJS-Electron/releases/download/${{ github.ref_name }}/latest.yml)|`${{steps.calc_hash.outputs.ymlhash}}`|
       env:
